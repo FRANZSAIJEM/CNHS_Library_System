@@ -4,6 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\book;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\View;
+
+
 
 
 class StudentController extends Controller
@@ -43,5 +48,41 @@ class StudentController extends Controller
         $message = $student->is_disabled ? 'Account disabled.' : 'Account enabled.';
         return redirect()->route('student')->with('success', $message);
     }
+
+    public function requestIndex()
+    {
+        // Retrieve all users with related requested books
+        $users = User::with('requestedBooks')->get();
+
+        // Calculate the total count of requests
+        $totalRequests = $users->pluck('requestedBooks')->flatten()->count();
+
+        return view('requests', compact('users', 'totalRequests'));
+    }
+
+
+    public function requestBook(Request $request, $id)
+    {
+        // Ensure the user is logged in
+        if (!Auth::check()) {
+            return redirect()->route('login'); // Redirect to login if not logged in
+        }
+
+        // Get the logged-in user
+        $user = Auth::user();
+
+        // Get the book ID from the form input
+        $bookId = $request->input('book_id');
+
+        // Find the book by ID
+        $book = book::findOrFail($bookId);
+
+        // Store the request information in the database
+        $user->requestedBooks()->attach($book);
+
+        return redirect()->route('requests', ['id' => $bookId])->with('success', 'Book requested successfully.');
+    }
+
+
 
 }

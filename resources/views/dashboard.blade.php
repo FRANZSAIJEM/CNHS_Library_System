@@ -35,14 +35,14 @@
                         @if (Auth::user()->is_admin)
                         <div class="rounded-lg" style="background-color: rgb(58, 123, 151); padding: 20px; margin-bottom: 20px">
                             <h1 style="font-size: 25px; color: black; text-align: center;">Total Requests</h1>
-                            <h3 style="text-align: center; padding-top: 20x; color: black;">4</h3>
-
+                            <h3 style="text-align: center; padding-top: 20px; color: black;">{{ $totalRequests }}</h3>
                             <h3 style="text-align: center; padding-top: 20x">
-                                <button style="font-size: 10px; color: black; padding: 10px; border-radius: 5px; background-color: rgb(215, 215, 215)"><b>View All Requests</b></button>
+                                <x-nav-link style="font-size: 13px; color: black; padding: 10px; border-radius: 5px; background-color: rgb(215, 215, 215)" :href="route('requests')" :active="request()->routeIs('requests')">
+                                    <b>{{ __('View All Requests') }}</b>
+                                </x-nav-link>
                             </h3>
-
-
                         </div>
+
                         <br>
                         @endif
                         @if (Auth::user()->is_admin)

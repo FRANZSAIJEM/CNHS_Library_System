@@ -6,6 +6,8 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\BookListController;
+use App\Http\Controllers\Controller;
+
 
 use App\Http\Middleware\AdminMiddleware;
 
@@ -35,14 +37,21 @@ Route::middleware(['auth', 'verified', 'account_status'])->group(function () {
 });
 
 
+Route::post('/requestBook/{id}', [StudentController::class, 'requestBook'])->name('requestBook');
+Route::get('/requests', [StudentController::class, 'requestIndex'])->middleware(['auth', 'verified', AdminMiddleware::class])->name('requests');
+
+
 
 
 //this will not allow non-admin user to go to student page
 Route::get('/student', [StudentController::class, 'index'])->middleware(['auth', 'verified', AdminMiddleware::class])->name('student');
 Route::get('/book', [BookController::class, 'index'])->middleware(['auth', 'verified', AdminMiddleware::class])->name('book');
 Route::post('/book', [BookController::class, 'store'])->middleware(['auth', 'verified', AdminMiddleware::class])->name('book');
+
 Route::get('/editBook/{id}', [BookController::class, 'edit'])->name('editBook.edit');
 Route::put('/updateBook/{id}', [BookController::class, 'update'])->name('updateBook.update');
+Route::get('/viewBook/{id}', [BookController::class, 'viewBook'])->name('viewBook');
+
 
 
 

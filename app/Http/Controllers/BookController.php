@@ -22,7 +22,7 @@ class BookController extends Controller
             'title' => 'required|max:255',
             'author' => 'required|max:255',
             'subject' => 'required|max:255',
-            'availability' => 'required|max:255',
+            'availability' => 'required|in:Available,Not Available',
             'isbn' => 'required|max:255',
             'description' => 'required|max:255',
             'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
@@ -85,6 +85,11 @@ class BookController extends Controller
 
         // Step 5: Redirect to a relevant page
         return redirect()->route('bookList')->with('success', 'Book updated successfully');
+    }
+
+    public function viewBook($id){
+        $book = Book::find($id);
+        return view('viewBook', compact('book'));
     }
 
 }

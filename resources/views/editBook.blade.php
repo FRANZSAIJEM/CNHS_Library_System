@@ -64,9 +64,8 @@
 
         .text_content1, .text_content2, .text_content3, .text_content4, .text_content5 {
             text-shadow: 0px 0px 10px #000000;
-
-
         }
+
         .form{
             display: inline-flex;
         }
@@ -81,11 +80,16 @@
         }
         .textCont{
             left: 120px;
+
         }
 
         .addBtn{
             align-self: flex-end; margin-top: 20px; background-color: white; color: black; padding: 13px; border-radius: 5px; font-size: 13px;
         }
+
+        #characterCount{
+
+    }
 
 
     @media (max-width: 360px) and (max-height: 640px) {
@@ -98,7 +102,7 @@
             margin: 20px;
         }
         .textCont{
-            left: 100px;
+            left: 110px;
         }
 
         .form .input{
@@ -124,7 +128,7 @@
             padding: 13px;
             border-radius: 5px;
             font-size: 13px;
-            transform: translateY(150px)
+            transform: translateY(175px)
 
         }
         .text_content2::before {
@@ -140,6 +144,11 @@
             width: 64%;
             height: 100%;
             object-fit: cover;
+    }
+
+    #characterCount{
+        transform: translateY(-130px);
+        padding: 20px;
     }
 
     }
@@ -198,7 +207,10 @@
                 <br>
                 <label class="textArea" for="description"><b>Description</b></label>
 
-                <textarea class="textArea" placeholder="Type here!" cols="142" rows="5" type="text" id="description" name="description" required style="box-shadow: 0px 20px 15px 5px rgba(0, 0, 0, 0.306); resize: none; border:0; border-radius: 5px; background-color: rgb(54, 86, 54);">{{ $book->description }}</textarea>
+                <textarea class="textArea" placeholder="Type here!" cols="142" rows="5" id="description" name="description" required
+                    style="box-shadow: 0px 20px 15px 5px rgba(0, 0, 0, 0.306); resize: none; border: 0; border-radius: 5px; background-color: rgb(54, 86, 54);"
+                    oninput="updateCharacterCount(this)">{{$book->description}}</textarea>
+                <div id="characterCount" >Characters left: 500</div>
 
                 <br>
 
@@ -220,4 +232,30 @@
       previewImage.style.display = 'block';
     }
   });
+
+
+
+  function updateCharacterCount(textArea) {
+        var maxLength = 255;
+        var currentLength = textArea.value.length;
+        var charactersLeft = maxLength - currentLength;
+
+        var characterCountElement = document.getElementById("characterCount");
+        characterCountElement.textContent = "Characters left: " + charactersLeft;
+
+        if (charactersLeft < 0) {
+            textArea.value = textArea.value.substring(0, maxLength);
+            characterCountElement.textContent = "Characters left: 0";
+        }
+    }
+
+    // Initialize character count when the page loads
+    window.onload = function() {
+        var textArea = document.getElementById("description");
+        var initialLength = textArea.value.length;
+        var charactersLeft = 255 - initialLength;
+
+        var characterCountElement = document.getElementById("characterCount");
+        characterCountElement.textContent = "Characters left: " + charactersLeft;
+    };
 </script>

@@ -19,5 +19,10 @@ class book extends Model
         'image',
     ];
 
+    public function requestedByUsers()
+{
+    return $this->belongsToMany(User::class, 'book_requests', 'book_id', 'user_id')
+        ->withTimestamps();
+}
 
 }

@@ -40,7 +40,7 @@
                         {{ __('Add Book') }}
                     </x-nav-link>
 
-                    <x-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.dashboard')">
+                    <x-nav-link :href="route('requests')" :active="request()->routeIs('requests')">
                         {{ __('Requests') }}
                     </x-nav-link>
 

@@ -3,12 +3,22 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\User;
+use App\Models\book;
 
 class AdminController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+
+    // public function displayAllRequests()
+    // {
+    //     // Retrieve all requests with related user and book information
+    //     $requests = User::whereHas('requestedBooks')->with('requestedBooks.book')->get();
+
+    //     return view('requests', ['requests' => $requests]);
+    // }
+
+
+
     public function index()
     {
         return view('admin.index');

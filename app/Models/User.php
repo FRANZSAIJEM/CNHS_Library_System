@@ -46,4 +46,12 @@ class User extends Authenticatable
         'password' => 'hashed',
         'is_admin' => 'boolean'
     ];
+
+    // User.php
+public function requestedBooks()
+{
+    return $this->belongsToMany(Book::class, 'book_requests', 'user_id', 'book_id')
+        ->withTimestamps();
+}
+
 }

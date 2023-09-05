@@ -85,43 +85,26 @@
 
                @if (!Auth::user()->is_admin)
                <div style="display: grid; place-content: center; margin-top: 20px;">
-                    <form method="POST" action="{{ route('requestBook', ['id' => $book->id]) }}">
-                        @csrf
+                <form method="POST" action="{{ route('requestBook', ['id' => $book->id]) }}">
+                    @csrf
+
+                    @if ($userHasRequestedThisBook || $book->availability === 'Not Available')
+                        <!-- If the user has already requested this book or the availability is "Not Available", show the button as unclickable -->
+                        <button type="submit" style="background-color: {{ $book->availability === 'Not Available' || $userHasRequestedThisBook ? 'rgb(83, 83, 83)' : 'white' }}; border-radius: 5px; padding: 10px; color: black; width: 100px;" {{ $book->availability === 'Not Available' || $userHasRequestedThisBook ? 'disabled' : '' }}>
+                            <b>{{ $userHasRequestedThisBook ? 'Requested' : 'Request' }}</b>
+                        </button>
+                    @else
+                        <!-- If the user has not requested this book and the availability is not "Not Available", show the button as clickable -->
                         <button type="submit" style="background-color: white; border-radius: 5px; padding: 10px; color: black; width: 100px;">
                             <b>Request</b>
                         </button>
-                        <input type="hidden" name="book_id" value="{{ $book->id }}">
-                    </form>
+                    @endif
+                    <input type="hidden" name="book_id" value="{{ $book->id }}">
+                </form>
                 </div>
                @endif
 
                </div>
-                {{-- <div style="margin: 7px; border-radius: 5px; box-shadow: 10px 10px 20px 5px rgba(0, 0, 0, 0.298);">
-                        <div style="background-position: center center; border-radius: 5px; width: 250px; height: 350px; background-size: cover; background-image: url('{{ asset('storage/' . $book->image) }}');">
-                            <div style="color: white; text-align: center; padding: 10px; text-shadow: 0px 0px 5px black">
-                                <div style="margin-top: 75px;">
-                                    <b style="font-size: 25px;">Title</b> <br>
-                                    {{$book->title}} <br>
-                                    <b style="font-size: 25px;">Author</b> <br>
-                                    {{$book->author}} <br>
-                                    <b style="font-size: 25px;">Subject</b> <br>
-                                    {{$book->subject}} <br>
-                                </div>
-                            </div>
-                        </div>
-
-                    @if (Auth::user()->is_admin)
-                    <div style="text-align: center; margin-top: 4px;">
-                        <form action="{{ route('editBook.edit', ['id' => $book->id]) }}" method="GET" style="display: inline;">
-                            @csrf
-                            <button type="submit" style="background-color: rgb(60, 163, 60); width: 123px !important; border: none; border-radius: 5px; padding: 10px; color: white; text-decoration: none; cursor: pointer;"><b>Edit</b></button>
-                        </form>
-
-                        <!-- Button to trigger the modal -->
-                        <button type="button" style="background-color: rgb(167, 55, 55); width: 123px; border-radius: 5px; padding: 10px; color: white;" onclick="showConfirmationModal({{ $book->id }})"><b>Delete</b></button>
-                    </div>
-                    @endif
-                </div> --}}
                 @else
                     <p>Book not found</p>
                 @endif

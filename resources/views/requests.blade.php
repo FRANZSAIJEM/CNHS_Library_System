@@ -43,7 +43,7 @@
              <div class="bookList" style="display: inline-flex; flex-wrap: wrap">
                 @foreach ($users as $user)
                     @foreach ($user->requestedBooks as $requestedBook)
-                    <div style="background-color: rgb(27, 66, 81); margin: 7px; border-radius: 5px; box-shadow: 10px 10px 20px 5px rgba(0, 0, 0, 0.298);">
+                        <div style="background-color: rgb(27, 66, 81); margin: 7px; border-radius: 5px; box-shadow: 10px 10px 20px 5px rgba(0, 0, 0, 0.298);">
                             <div style="background-position: center center; border-radius: 5px; width: 250px; height: 350px; background-size: cover;">
                                 <div style="color: white; padding: 20px; text-shadow: 0px 0px 5px black">
                                     <div style="">
@@ -59,14 +59,21 @@
                                 </div>
                             </div>
                             <div style="display: flex; place-content: center; margin-bottom: 20px;">
-                                <button style="margin: 5px; background-color: rgb(56, 108, 128); color: white; padding: 10px; border-radius: 5px;">View</button>
-                                <button style="margin: 5px; background-color: rgb(56, 128, 63); color: white; padding: 10px; border-radius: 5px;">Accept</button>
-                                <button style="margin: 5px; background-color: rgb(128, 56, 56); color: white; padding: 10px; border-radius: 5px;">Decline</button>
-                            </div>
-                    </div>
+                                <a id="viewButton-{{ $requestedBook->id }}" href="{{ route('viewBook', ['id' => $requestedBook->id]) }}" style="margin: 5px; background-color: rgb(56, 108, 128); color: white; padding: 10px; border-radius: 5px;">View</a>
 
+
+                                <button style="margin: 5px; background-color: rgb(56, 128, 63); color: white; padding: 10px; border-radius: 5px;">Accept</button>
+                                <form action="{{ route('removeRequest', ['user_id' => $user->id, 'book_id' => $requestedBook->id]) }}" method="POST">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" style="margin: 5px; background-color: rgb(128, 56, 56); color: white; padding: 10px; border-radius: 5px;">Remove</button>
+                                </form>
+
+                            </div>
+                        </div>
                     @endforeach
                 @endforeach
+
              </div>
         </div>
     </div>

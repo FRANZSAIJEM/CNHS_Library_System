@@ -17,10 +17,11 @@ return new class extends Migration
             $table->unsignedBigInteger('book_id');
             $table->timestamps();
 
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('book_id')->references('id')->on('books')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('book_id')->references('id')->on('books');
         });
     }
+
 
     /**
      * Reverse the migrations.

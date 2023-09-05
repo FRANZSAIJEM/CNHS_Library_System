@@ -48,10 +48,16 @@ class User extends Authenticatable
     ];
 
     // User.php
-public function requestedBooks()
+    public function requestedBooks()
+    {
+        return $this->belongsToMany(Book::class, 'book_requests', 'user_id', 'book_id')
+            ->withTimestamps();
+    }
+
+    public function hasRequestedBook($bookId)
 {
-    return $this->belongsToMany(Book::class, 'book_requests', 'user_id', 'book_id')
-        ->withTimestamps();
+    return $this->requestedBooks()->where('book_id', $bookId)->exists();
 }
+
 
 }

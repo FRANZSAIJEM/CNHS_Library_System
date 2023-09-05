@@ -25,4 +25,6 @@ class book extends Model
         ->withTimestamps();
 }
 
+
+
 }

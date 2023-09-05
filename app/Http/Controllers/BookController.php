@@ -3,8 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Models\book;
+use App\Models\User;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use App\Models\BookDecline;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use App\Models\RequestedBook;
+
+
 
 class BookController extends Controller
 {
@@ -87,9 +95,33 @@ class BookController extends Controller
         return redirect()->route('bookList')->with('success', 'Book updated successfully');
     }
 
-    public function viewBook($id){
+    public function viewBook($id)
+    {
         $book = Book::find($id);
-        return view('viewBook', compact('book'));
+        $userHasRequestedThisBook = false;
+
+        if (Auth::check()) {
+            $user = Auth::user();
+            // Check if the user has already requested this book
+            $userHasRequestedThisBook = $user->hasRequestedBook($book->id);
+        }
+
+        return view('viewBook', compact('book', 'userHasRequestedThisBook'));
     }
 
+
+    public function removeRequest($userId, $bookId)
+    {
+        // Find the user by ID
+        $user = User::find($userId);
+
+        if (!$user) {
+            return redirect()->back()->with('error', 'User not found.');
+        }
+
+        // Detach the request for the specific book and user
+        $user->requestedBooks()->wherePivot('book_id', $bookId)->detach();
+
+        return redirect()->back()->with('success', 'Request removed successfully.');
+    }
 }

@@ -51,6 +51,15 @@ Route::post('/book', [BookController::class, 'store'])->middleware(['auth', 'ver
 Route::get('/editBook/{id}', [BookController::class, 'edit'])->name('editBook.edit');
 Route::put('/updateBook/{id}', [BookController::class, 'update'])->name('updateBook.update');
 Route::get('/viewBook/{id}', [BookController::class, 'viewBook'])->name('viewBook');
+Route::delete('/remove-request/{user_id}/{book_id}', [BookController::class, 'removeRequest'])->name('removeRequest');
+
+
+
+
+
+
+
+
 
 
 

@@ -22,6 +22,22 @@
             width: 250px;
             text-align: center;
         }
+        .imgView{
+            width: 450px;
+            height: 575px;
+        }
+        .fontSize{
+            font-size: 30px;
+        }
+        .fontSize2{
+            font-size: 25px;
+        }
+        .avail{
+            transform: translateY(0px);
+        }
+        textarea{
+            height: 200px;
+        }
         @media (max-width: 360px) and (max-height: 640px) {
         .content {
             width: 100%; /* Adjust width for smaller screens */
@@ -40,6 +56,30 @@
         .bookList{
             margin-left: 50px;
         }
+        .imgView{
+            width: 325px;
+            height: 375px;
+
+        }
+        .fontSize{
+            font-size: 20px;
+        }
+        .fontSize2{
+            font-size: 15px;
+        }
+        .description{
+            margin-top: -50px;
+        }
+        .avail{
+            transform: translateY(-20px);
+        }
+
+        textarea{
+            width: 280px;
+            height: 90px;
+
+        }
+
     }
     </style>
 
@@ -53,31 +93,31 @@
             <div class="content">
                 @if(isset($book))
                <div style="display: grid; place-content: center;">
-                <div style="background-color: white; padding: 10px; border-radius: 5px;">
-                    <div style="border-radius: 5px; background-position: center center; width: 500px; height: 575px; background-image: url('{{ asset('storage/' . $book->image) }}');">
+                <div style="padding: 10px; border-radius: 5px; margin-top: -30px;">
+                    <div class="imgView" style="box-shadow: 10px 10px 20px 5px rgba(0, 0, 0, 0.298); background-size: cover; border-radius: 5px; background-position: center center; background-image: url('{{ asset('storage/' . $book->image) }}');">
                         <div style="color: white; text-align: center; padding: 10px; text-shadow: 0px 0px 5px black">
                             <div style="margin-top: 20px;">
-                                <b style="font-size: 30px;">{{$book->title}}</b> <br> <br> <br>
-                                <p style="font-size: 30px;">Author</p>
-                                {{$book->author}} <br> <br> <br>
+                                <b class="fontSize">{{$book->title}}</b> <br> <br>
+                                <p class="fontSize2"><b>Author</b></p>
+                                {{$book->author}}
                                 <div style="display: flex; place-content: center;">
                                         <div>
-                                            <b style="font-size: 25px;">Subject</b> <br>
+                                            <b class="fontSize2">Subject</b> <br>
                                             {{$book->subject}}
                                         </div>
-                                        <br>
+                                        <br> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
                                         <div>
-                                            <b style="font-size: 25px; ">ISBN</b> <br>
+                                            <b class="fontSize2">ISBN</b> <br>
                                             {{$book->isbn}}
                                         </div>
                                 </div> <br>
                             </div>
                         </div>
-                        <div style="color: white; padding: 20px;">
+                        <div class="description" style="color: white; padding: 20px; text-shadow: 0px 0px 5px black;">
                             <b style="text-align: left;">Description</b> <br>
-                            {{$book->description}}
-                        </div> <br>
-                        <div style="padding: 20px;">
+                            <textarea disabled style="border-radius: 5px; resize: none; background-color: transparent; border: 0; text-shadow: 0px 0px 5px black" name="" id="" cols="50" rows="3">{{$book->description}}</textarea>
+                        </div>
+                        <div class="avail" style="padding: 20px;">
                             <b style="color: {{ $book->availability === 'Not Available' ? 'red' : 'rgb(0, 255, 0)' }}">{{ $book->availability }}</b>
                         </div>
                     </div>

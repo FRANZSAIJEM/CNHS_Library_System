@@ -6,6 +6,8 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\BookListController;
+use App\Http\Controllers\AcceptRequestController;
+
 use App\Http\Controllers\Controller;
 
 
@@ -54,14 +56,7 @@ Route::get('/viewBook/{id}', [BookController::class, 'viewBook'])->name('viewBoo
 Route::delete('/remove-request/{user_id}/{book_id}', [BookController::class, 'removeRequest'])->name('removeRequest');
 
 
-
-
-
-
-
-
-
-
+Route::post('/acceptRequest/{user}/{book}', [AcceptRequestController::class, 'acceptRequest'])->name('acceptRequest');
 
 
 Route::get('/bookList', [BookListController::class, 'index'])->middleware(['auth', 'verified', AdminMiddleware::class])->name('bookList');

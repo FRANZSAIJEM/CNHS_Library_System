@@ -61,8 +61,11 @@
                             <div style="display: flex; place-content: center; margin-bottom: 20px;">
                                 <a id="viewButton-{{ $requestedBook->id }}" href="{{ route('viewBook', ['id' => $requestedBook->id]) }}" style="margin: 5px; background-color: rgb(56, 108, 128); color: white; padding: 10px; border-radius: 5px;">View</a>
 
+                                <form action="{{ route('acceptRequest', ['user' => $user, 'book' => $requestedBook]) }}" method="POST">
+                                    @csrf
+                                    <button type="submit" style="margin: 5px; background-color: rgb(56, 128, 63); color: white; padding: 10px; border-radius: 5px;">Accept</button>
+                                </form>
 
-                                <button style="margin: 5px; background-color: rgb(56, 128, 63); color: white; padding: 10px; border-radius: 5px;">Accept</button>
                                 <form action="{{ route('removeRequest', ['user_id' => $user->id, 'book_id' => $requestedBook->id]) }}" method="POST">
                                     @csrf
                                     @method('DELETE')

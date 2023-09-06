@@ -27,12 +27,22 @@ class BookListController extends Controller
     public function destroy(Request $request, $id)
     {
         // Find the book by its ID
-        $book = book::findOrFail($id);
+        $book = Book::findOrFail($id);
+
+        // Get the users who have requested this book
+        $users = $book->requestedByUsers;
+
+        // Detach the book from all users who requested it
+        foreach ($users as $user) {
+            $user->requestedBooks()->detach($book->id);
+        }
 
         // Delete the book
         $book->delete();
 
         // Redirect back to the book list page or any other page you prefer
-        return redirect()->route('bookList')->with('success', 'Book deleted successfully');
+        return redirect()->route('bookList')->with('success', 'Book and associated requests deleted successfully');
     }
+
+
 }

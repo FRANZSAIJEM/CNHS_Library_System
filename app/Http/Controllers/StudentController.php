@@ -80,7 +80,7 @@ class StudentController extends Controller
         // Store the request information in the database
         $user->requestedBooks()->attach($book);
 
-        return redirect()->route('requests', ['id' => $bookId])->with('success', 'Book requested successfully.');
+        return redirect()->route('viewBook', ['id' => $bookId])->with('success', 'Book requested successfully.');
     }
 
 

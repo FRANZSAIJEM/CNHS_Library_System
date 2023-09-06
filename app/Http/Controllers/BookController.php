@@ -125,8 +125,4 @@ class BookController extends Controller
         return redirect()->back()->with('success', 'Request removed successfully.');
     }
 
-
-    public function acceptRequest(){
-
-    }
 }

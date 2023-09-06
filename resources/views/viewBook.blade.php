@@ -125,22 +125,10 @@
 
                @if (!Auth::user()->is_admin)
                <div style="display: grid; place-content: center; margin-top: 20px;">
-                <form method="POST" action="{{ route('requestBook', ['id' => $book->id]) }}">
-                    @csrf
-
-                    @if ($userHasRequestedThisBook || $book->availability === 'Not Available')
-                        <!-- If the user has already requested this book or the availability is "Not Available", show the button as unclickable -->
-                        <button type="submit" style="background-color: {{ $book->availability === 'Not Available' || $userHasRequestedThisBook ? 'rgb(83, 83, 83)' : 'white' }}; border-radius: 5px; padding: 10px; color: black; width: 100px;" {{ $book->availability === 'Not Available' || $userHasRequestedThisBook ? 'disabled' : '' }}>
-                            <b>{{ $userHasRequestedThisBook ? 'Requested' : 'Request' }}</b>
-                        </button>
-                    @else
-                        <!-- If the user has not requested this book and the availability is not "Not Available", show the button as clickable -->
-                        <button type="submit" style="background-color: white; border-radius: 5px; padding: 10px; color: black; width: 100px;">
-                            <b>Request</b>
-                        </button>
-                    @endif
-                    <input type="hidden" name="book_id" value="{{ $book->id }}">
-                </form>
+                {{-- <button type="button" style="background-color: rgb(128, 56, 56); width: 123px; border-radius: 5px; padding: 10px; color: white;" onclick="showConfirmationModal({{ $book->id }})"><b>Request</b></button> --}}
+                <button onclick="showConfirmationModal({{ $book->id }})" type="submit" style="background-color: {{ $book->availability === 'Not Available' || $userHasRequestedThisBook ? 'rgb(83, 83, 83)' : 'white' }}; border-radius: 5px; padding: 10px; color: black; width: 100px;" {{ $book->availability === 'Not Available' || $userHasRequestedThisBook ? 'disabled' : '' }}>
+                    <b>{{ $userHasRequestedThisBook ? 'Requested' : 'Request' }}</b>
+                </button>
                 </div>
                @endif
 
@@ -150,9 +138,53 @@
                 @endif
             </div>
         </div>
+        <div id="confirmDeleteModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 1;">
+            <div style="background-color: white; border-radius: 5px; width: 300px; margin: 100px auto; padding: 20px; text-align: center;">
+                <h2>Confirmation</h2>
+                <p>Once you click okay, We will notify
+                    you for the pick up time and date,
+                    Thank you!</p>
+                    <button style="background-color: rgb(146, 146, 146); color: white; padding: 10px 20px; margin-right: 10px; border-radius: 5px;" onclick="hideConfirmationModal()">Cancel</button>
 
+                <div style="display: inline-flex">
+                    <!-- Form to submit the delete request -->
+
+                    <form method="POST" action="{{ route('requestBook', ['id' => $book->id]) }}">
+
+                        @csrf
+
+                        @if ($userHasRequestedThisBook || $book->availability === 'Not Available')
+                            <!-- If the user has already requested this book or the availability is "Not Available", show the button as unclickable -->
+                            <button type="submit" style="background-color: {{ $book->availability === 'Not Available' || $userHasRequestedThisBook ? 'rgb(83, 83, 83)' : 'white' }}; border-radius: 5px; padding: 10px; color: black; width: 100px;" {{ $book->availability === 'Not Available' || $userHasRequestedThisBook ? 'disabled' : '' }}>
+                                <b>{{ $userHasRequestedThisBook ? 'Requested' : 'Request' }}</b>
+                            </button>
+                        @else
+
+                            <!-- If the user has not requested this book and the availability is not "Not Available", show the button as clickable -->
+                            <button type="submit" style="color: white; background-color: rgb(60, 163, 60);  border-radius: 5px; padding: 10px 20px; width: 100px;">
+                                <b>Request</b>
+                            </button>
+                        @endif
+                        <input type="hidden" name="book_id" value="{{ $book->id }}">
+                    </form>
+
+                </div>
+            </div>
+        </div>
 
         <script>
+   function showConfirmationModal(bookId) {
+            var modal = document.getElementById('confirmDeleteModal');
+            modal.style.display = 'block';
 
+            // Set the action of the form to include the specific book's ID
+            var form = modal.querySelector('form');
+            form.action = form.action.replace('__BOOK_ID__', bookId);
+        }
+
+        function hideConfirmationModal() {
+            var modal = document.getElementById('confirmDeleteModal');
+            modal.style.display = 'none';
+        }
         </script>
     </x-admin-layout>

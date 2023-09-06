@@ -16,6 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('book_id');
             $table->unsignedBigInteger('borrower_id');
+            $table->string('book_title'); // Add the book title column
             $table->timestamp('date_borrow')->nullable();
             $table->timestamp('date_pickup')->nullable();
             $table->timestamp('date_return')->nullable();

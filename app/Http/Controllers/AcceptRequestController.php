@@ -17,10 +17,12 @@ class AcceptRequestController extends Controller
         $acceptedRequest = new AcceptedRequest();
         $acceptedRequest->user_id = $user->id;
         $acceptedRequest->book_id = $book->id;
+        $acceptedRequest->book_title = $book->title;
         $acceptedRequest->borrower_id = $user->id;
         $acceptedRequest->date_borrow = now();
-        $acceptedRequest->date_pickup = null; // Set this as needed
-        $acceptedRequest->date_return = null; // Set this as needed
+         // Retrieve the values from the form and format them as datetime values
+        $acceptedRequest->date_pickup = \Carbon\Carbon::createFromFormat('Y-m-d', $request->input('date_pickup'));
+        $acceptedRequest->date_return = \Carbon\Carbon::createFromFormat('Y-m-d', $request->input('date_return'));
         $acceptedRequest->save();
 
         // Detach the book from the user's requestedBooks relationship since it's been accepted.

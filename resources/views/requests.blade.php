@@ -61,10 +61,16 @@
                             <div style="display: flex; place-content: center; margin-bottom: 20px;">
                                 <a id="viewButton-{{ $requestedBook->id }}" href="{{ route('viewBook', ['id' => $requestedBook->id]) }}" style="margin: 5px; background-color: rgb(56, 108, 128); color: white; padding: 10px; border-radius: 5px;">View</a>
 
-                                <form action="{{ route('acceptRequest', ['user' => $user, 'book' => $requestedBook]) }}" method="POST">
+                                <button type="button" class="open-modal" onclick="showAcceptanceModal({{ $requestedBook->id }})" style="margin: 5px; background-color: rgb(56, 128, 63); color: white; padding: 10px; border-radius: 5px;">Accept</button>
+
+
+
+                                {{-- <form action="{{ route('acceptRequest', ['user' => $user, 'book' => $requestedBook]) }}" method="POST">
                                     @csrf
                                     <button type="submit" style="margin: 5px; background-color: rgb(56, 128, 63); color: white; padding: 10px; border-radius: 5px;">Accept</button>
-                                </form>
+                                </form> --}}
+
+
 
                                 <form action="{{ route('removeRequest', ['user_id' => $user->id, 'book_id' => $requestedBook->id]) }}" method="POST">
                                     @csrf
@@ -74,10 +80,53 @@
 
                             </div>
                         </div>
+                        <div id="confirmAcceptModal-{{ $requestedBook->id }}" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 1;">
+                            <div style="background-color: white; border-radius: 5px; width: 300px; margin: 100px auto; padding: 20px; text-align: center;">
+                                <div style="display: inline-flex">
+                                    <!-- Form to submit the delete request -->
+                                    <form action="{{ route('acceptRequest', ['user' => $user, 'book' => '__REQUESTEDBOOK_ID__']) }}" method="POST">
+                                        @csrf
+                                        <div class="form-group">
+                                            <label for="date_pickup">Date Pickup:</label>
+                                            <input type="date" id="date_pickup" name="date_pickup" required>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="date_return">Date Pickup:</label>
+                                            <input type="date" id="date_return" name="date_return" required>
+                                        </div>
+
+                                        <button style="background-color: rgb(146, 146, 146); padding: 10px 20px; margin-right: 10px; border-radius: 5px; color: white;" onclick="hideAcceptanceModal({{ $requestedBook->id }})">Cancel</button>
+                                        <button type="submit" style="margin: 5px; background-color: rgb(60, 163, 60);  color: white; padding: 10px; border-radius: 5px; width: 100px;">Accept</button>
+                                    </form>
+                               </div>
+                            </div>
+                        </div>
                     @endforeach
                 @endforeach
-
              </div>
         </div>
     </div>
+
+
+
+    <script>
+        function showAcceptanceModal(requestedBook) {
+            var modal = document.getElementById(`confirmAcceptModal-${requestedBook}`);
+            modal.style.display = 'block';
+
+            // Set the action of the form to include the specific book's ID
+            var form = modal.querySelector('form');
+            form.action = form.action.replace('__REQUESTEDBOOK_ID__', requestedBook);
+        }
+
+        function hideAcceptanceModal(requestedBook) {
+            var modal = document.getElementById(`confirmAcceptModal-${requestedBook}`);
+            modal.style.display = 'none';
+        }
+
+    </script>
 </x-admin-layout>
+
+
+

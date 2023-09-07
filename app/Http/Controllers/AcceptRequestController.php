@@ -23,6 +23,20 @@ class AcceptRequestController extends Controller
          // Retrieve the values from the form and format them as datetime values
         $acceptedRequest->date_pickup = \Carbon\Carbon::createFromFormat('Y-m-d', $request->input('date_pickup'));
         $acceptedRequest->date_return = \Carbon\Carbon::createFromFormat('Y-m-d', $request->input('date_return'));
+
+
+        $fines = $request->input('fines');
+        if (!empty($fines)) {
+            // Calculate the fines and store them with two decimal places
+            $calculatedFines = (float) number_format($fines, 2, '.', '');
+            $acceptedRequest->fines = $calculatedFines;
+
+            // Store the calculated fines in the session
+            $request->session()->put('fines', $calculatedFines);
+        } else {
+            $acceptedRequest->fines = null; // If no fines are provided, set it to null.
+        }
+
         $acceptedRequest->save();
 
         // Detach the book from the user's requestedBooks relationship since it's been accepted.

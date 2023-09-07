@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\book;
+use App\Models\AcceptedRequest;
+
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\View;
 
@@ -13,22 +15,39 @@ use Illuminate\Support\Facades\View;
 
 class StudentController extends Controller
 {
+
+    public function calculateTotalFines($userId)
+    {
+        // Calculate the total fines for a user based on their user ID
+        return AcceptedRequest::where('user_id', $userId)->sum('fines');
+    }
+
+
+
     public function index(Request $request)
     {
         $query = User::where('is_admin', false);
+        $fines = $request->session()->get('fines');
 
         if ($request->has('id_number_search')) {
             $idNumberSearch = $request->input('id_number_search');
             $query->where(function ($subquery) use ($idNumberSearch) {
                 $subquery->where('id_number', 'LIKE', '%' . $idNumberSearch . '%')
-                        ->orWhere('name', 'LIKE', '%' . $idNumberSearch . '%');
+                    ->orWhere('name', 'LIKE', '%' . $idNumberSearch . '%');
             });
         }
 
         $students = $query->get();
 
-        return view('student', ['students' => $students]);
+        // Calculate total fines for each student
+        foreach ($students as $student) {
+            // Calculate the total fines for this student using the function
+            $student->totalFines = $this->calculateTotalFines($student->id);
+        }
+
+        return view('student', ['students' => $students, 'fines' => $fines]);
     }
+
 
     public function disableAccount($id)
     {

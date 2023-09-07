@@ -15,7 +15,7 @@
                             <h3 style="text-align: center; padding-top: 20x; color: black;">{{$totalBooks}}</h3>
                             @if (!Auth::user()->is_admin)
                             <h3 style="text-align: center; padding-top: 20x">
-                                <x-nav-link style="font-size: 20px; color: black; padding: 10px; border-radius: 5px; background-color: rgb(58, 123, 151)" :href="route('bookList')" :active="request()->routeIs('bookList')">
+                                <x-nav-link style="font-size: 13px; color: black; padding: 10px; border-radius: 5px; background-color: rgb(215, 215, 215)" :href="route('bookList')" :active="request()->routeIs('bookList')">
                                     <b>{{ __('Borrow Book') }}</b>
                                 </x-nav-link>
                             </h3>
@@ -28,9 +28,23 @@
                                 </x-nav-link>
                             </h3>
                             @endif
+                        </div>
+                        @if (!Auth::user()->is_admin)
+                        <div class="rounded-lg" style="box-shadow: 0px 20px 15px 5px rgba(0, 0, 0, 0.306); background-color: rgb(58, 123, 151); padding: 20px; margin-bottom: 20px">
 
+                            <h1 style="font-size: 25px; color: black; text-align: center;">Total Fines</h1>
+                            <h3 style="text-align: center; padding-top: 20x; color: black;">₱ &nbsp;{{ number_format($totalFines, 2) ?? '0.00' }}</h3>
+
+
+                            <h3 style="text-align: center; padding-top: 20x">
+                                <x-nav-link style="font-size: 13px; color: black; padding: 10px; border-radius: 5px; background-color: rgb(215, 215, 215)" :href="route('bookList')" :active="request()->routeIs('bookList')">
+                                    <b>{{ __('Borrow Book') }}</b>
+                                </x-nav-link>
+                            </h3>
 
                         </div>
+                        @endif
+
                         <br>
                         @if (Auth::user()->is_admin)
                         <div class="rounded-lg" style="background-color: rgb(58, 123, 151); padding: 20px; margin-bottom: 20px">

@@ -76,7 +76,7 @@
                                     <b>Grade Level </b> <br> {{$student->grade_level}} <br>
                                 </div>
                                 <div style="margin-bottom: 20px;">
-                                    <b>Total Fines </b> <br> P10.00 <br>
+                                    <b>Total Fines</b> <br>₱ &nbsp;{{ number_format($student->totalFines, 2) ?? '0.00' }} <br>
                                 </div>
 
                                 <div>

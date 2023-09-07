@@ -92,8 +92,13 @@
                                         </div>
 
                                         <div class="form-group">
-                                            <label for="date_return">Date Pickup:</label>
+                                            <label for="date_return">Date Return:</label>
                                             <input type="date" id="date_return" name="date_return" required>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="fines">Fines (optional):</label>
+                                            <input type="number" step="0.01" id="fines" name="fines" placeholder="Enter fine amount">
                                         </div>
 
                                         <button style="background-color: rgb(146, 146, 146); padding: 10px 20px; margin-right: 10px; border-radius: 5px; color: white;" onclick="hideAcceptanceModal({{ $requestedBook->id }})">Cancel</button>

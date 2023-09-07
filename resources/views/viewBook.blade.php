@@ -123,7 +123,7 @@
                     </div>
                 </div>
 
-               @if (!Auth::user()->is_admin)
+               @if (Auth::user()->is_admin)
                <div style="display: grid; place-content: center; margin-top: 20px;">
                 {{-- <button type="button" style="background-color: rgb(128, 56, 56); width: 123px; border-radius: 5px; padding: 10px; color: white;" onclick="showConfirmationModal({{ $book->id }})"><b>Request</b></button> --}}
                 <button onclick="showConfirmationModal({{ $book->id }})" type="submit" style="background-color: {{ $book->availability === 'Not Available' || $userHasRequestedThisBook ? 'rgb(83, 83, 83)' : 'white' }}; border-radius: 5px; padding: 10px; color: black; width: 100px;" {{ $book->availability === 'Not Available' || $userHasRequestedThisBook ? 'disabled' : '' }}>

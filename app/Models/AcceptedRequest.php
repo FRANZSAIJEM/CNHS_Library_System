@@ -17,4 +17,9 @@ class AcceptedRequest extends Model
         'date_pickup',
         'date_return',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

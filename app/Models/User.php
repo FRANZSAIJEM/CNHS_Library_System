@@ -59,5 +59,10 @@ class User extends Authenticatable
     return $this->requestedBooks()->where('book_id', $bookId)->exists();
 }
 
+public function acceptedRequests()
+{
+    return $this->hasMany(AcceptedRequest::class);
+}
+
 
 }

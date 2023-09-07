@@ -20,6 +20,7 @@ return new class extends Migration
             $table->timestamp('date_borrow')->nullable();
             $table->timestamp('date_pickup')->nullable();
             $table->timestamp('date_return')->nullable();
+            $table->decimal('fines', 10, 2)->nullable();
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users');

@@ -7,10 +7,29 @@ use App\Models\User;
 use App\Models\Book; // Import your Book model
 use App\Models\AcceptedRequest; // Import your Book model
 use App\Models\Notification;
-
+use Illuminate\Support\Facades\Auth;
 
 class AcceptRequestController extends Controller
 {
+
+    public function index(Request $request)
+    {
+        $query = book::query();
+        $user = Auth::user();
+
+        if ($request->has('request_search')) {
+            $bookSearch = $request->input('request_search');
+            $query->where(function ($subquery) use ($bookSearch) {
+                $subquery->where('name', 'LIKE', '%' . $bookSearch . '%')
+                        ->orWhere('id_number', 'LIKE', '%' . $bookSearch . '%');
+            });
+        }
+
+        $bookLists = $query->get();
+
+        return view('bookList', ['bookList' => $bookLists, 'user' => $user, 'book' => $book]);
+    }
+
     public function acceptRequest(Request $request, User $user, Book $book)
     {
         // Assuming you have a "accepted_requests" table to store the accepted requests.
@@ -26,15 +45,21 @@ class AcceptRequestController extends Controller
 
 
         $fines = $request->input('fines');
-        if (!empty($fines)) {
-            // Calculate the fines and store them with two decimal places
-            $calculatedFines = (float) number_format($fines, 2, '.', '');
-            $acceptedRequest->fines = $calculatedFines;
+        if ($acceptedRequest->date_return->isPast()) {
+            $fines = $request->input('fines');
+            if (!empty($fines)) {
+                // Calculate the fines and store them with two decimal places
+                $calculatedFines = (float) number_format($fines, 2, '.', '');
+                $acceptedRequest->fines = $calculatedFines;
 
-            // Store the calculated fines in the session
-            $request->session()->put('fines', $calculatedFines);
+                // Store the calculated fines in the session
+                $request->session()->put('fines', $calculatedFines);
+            } else {
+                $acceptedRequest->fines = null; // If no fines are provided, set it to null.
+            }
         } else {
-            $acceptedRequest->fines = null; // If no fines are provided, set it to null.
+            // If the return date is in the future, set fines to null or any other desired action.
+            $acceptedRequest->fines = null;
         }
 
         $acceptedRequest->save();

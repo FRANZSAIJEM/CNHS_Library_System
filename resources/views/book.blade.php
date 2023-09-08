@@ -18,7 +18,7 @@
             pointer-events: none;
             position: absolute;
             top: 0;
-            margin-left: 20px;
+            margin-left: 385px;
             width: 94%;
             height: 100%;
             object-fit: cover;
@@ -43,6 +43,11 @@
         width: 100%;
         height: 100%;
         border-radius: 5px;
+    }
+
+    .textArea{
+        width: 1250px;
+
     }
 
     .text_content1::before {
@@ -78,9 +83,12 @@
     }
     .imgInput{
         margin-left: 20px;
+        transform: translateX(365px);
     }
     .textCont{
         left: 120px;
+        transform: translateX(365px);
+
     }
 
     .addBtn{
@@ -91,6 +99,7 @@
         padding: 13px;
         border-radius: 5px;
         font-size: 13px;
+        transform: translateX(365px);
     }
     .img{
         width: 30px;
@@ -113,6 +122,8 @@
 
     .textCont{
         left: 110px;
+        transform: translateX(0px);
+
     }
 
     .text_content2::before {
@@ -128,6 +139,8 @@
     }
     .imgInput{
         margin-left: 0;
+        transform: translateX(0px);
+
     }
     .textArea{
         width: 320px;

@@ -18,7 +18,7 @@
                 pointer-events: none;
                 position: absolute;
                 top: 0;
-                margin-left: 20px;
+                margin-left: 385px;
                 width: 94%;
                 height: 100%;
                 object-fit: cover;
@@ -30,7 +30,10 @@
             margin: 0 auto;
 
         }
+        .textArea{
+            width: 1250px;
 
+        }
 
         #image::-webkit-file-upload-button {
             visibility: hidden;
@@ -77,14 +80,23 @@
         }
         .imgInput{
             margin-left: 20px;
+            transform: translateX(365px);
         }
         .textCont{
             left: 120px;
+            transform: translateX(365px);
 
         }
 
         .addBtn{
-            align-self: flex-end; margin-top: 20px; background-color: white; color: black; padding: 13px; border-radius: 5px; font-size: 13px;
+            align-self: flex-end;
+            margin-top: 20px;
+            background-color: white;
+            color: black; padding: 13px;
+            border-radius: 5px;
+            font-size: 13px;
+            transform: translateX(365px);
+
         }
 
         #characterCount{
@@ -103,6 +115,8 @@
         }
         .textCont{
             left: 110px;
+            transform: translateX(0px);
+
         }
 
         .form .input{
@@ -114,6 +128,8 @@
         }
         .imgInput{
             margin-left: 0;
+            transform: translateX(0px);
+
         }
         .textArea{
             width: 320px;

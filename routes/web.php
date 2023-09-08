@@ -60,6 +60,7 @@ Route::post('/acceptRequest/{user}/{book}', [AcceptRequestController::class, 'ac
 
 
 Route::get('/bookList', [BookListController::class, 'index'])->middleware(['auth', 'verified', AdminMiddleware::class])->name('bookList');
+
 Route::delete('/bookList/{id}', [BookListController::class,  'destroy'])->name('bookList.destroy');
 
 //this will make the student toggle enabled or disabled

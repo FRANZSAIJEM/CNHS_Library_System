@@ -2,13 +2,13 @@
     .container {
             display: grid;
             place-items: center;
-            margin-top: 50px;
+            margin-top: 100px;
+            margin-left: 150px;
         }
 
-    .content {
-        width: 57.5%;
-        margin: 0 auto;
-        }
+        .content {
+            margin: 0 auto;
+            }
 
         .searchBtn{
             display: flex;
@@ -38,7 +38,14 @@
         textarea{
             height: 200px;
         }
-        @media (max-width: 360px) and (max-height: 640px) {
+        @media (max-width: 1440px) and (max-height: 640px) {
+            .container {
+            display: grid;
+            place-items: center;
+            margin-top: 50px;
+            margin-left: 0px;
+        }
+
         .content {
             width: 100%; /* Adjust width for smaller screens */
 

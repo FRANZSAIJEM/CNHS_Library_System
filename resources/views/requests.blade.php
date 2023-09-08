@@ -17,8 +17,32 @@
 
 
     }
+    .bookList{
 
-    @media (max-width: 360px) and (max-height: 640px) {
+        width: 1300px;
+    }
+
+    .searchBtn{
+        text-align: right;
+        margin-bottom: 30px;
+        margin-right: 35px;
+        transform: translateX(365px);
+
+    }
+    .searchInpt{
+        width: 250px
+    }
+
+    @media (max-width: 1440px) and (max-height: 640px) {
+        .searchBtn{
+        text-align: right;
+        margin-right: 15px;
+        margin-bottom: -100px;
+        transform: translateY(-110px)
+    }
+    .searchInpt{
+        width: 100px
+    }
     .content {
         width: 100%; /* Adjust width for smaller screens */
 
@@ -34,19 +58,28 @@
         width: 100px
     }
     .bookList{
-        margin-left: 50px;
+        margin-left: 30px;
+        width: 200px;
+
     }
 }
 </style>
     <div class="container">
         <div class="content">
-             <div class="bookList" style="display: inline-flex; flex-wrap: wrap">
+            <div class="searchBtn">
+                {{-- <form action="{{ route('request') }}" method="GET">
+                    @csrf <!-- Add CSRF token field if you haven't already -->
+                    <input class="searchInpt" style="text-align:center; border-radius: 20px; color:black;" type="text" name="request_search" placeholder="ID Number, Name">
+                    <button type="submit" style="color:white; border-radius: 5px; background-color: rgb(4, 51, 71); padding: 10px;">Search</button>
+                </form> --}}
+            </div>
+             <div class="bookList" style="display: inline-flex; flex-wrap: wrap;">
                 @foreach ($users as $user)
                     @foreach ($user->requestedBooks as $requestedBook)
-                        <div style="background-color: rgb(27, 66, 81); margin: 7px; border-radius: 5px; box-shadow: 10px 10px 20px 5px rgba(0, 0, 0, 0.298);">
+                        <div style="background-color: rgb(27, 66, 81); margin: 30px; border-radius: 5px; box-shadow: 10px 10px 20px 5px rgba(0, 0, 0, 0.298);">
                             <div style="background-position: center center; border-radius: 5px; width: 250px; height: 350px; background-size: cover;">
-                                <div style="color: white; padding: 20px; text-shadow: 0px 0px 5px black">
-                                    <div style="">
+                                <div style="color: white; padding: 20px; text-shadow: 0px 0px 5px black;">
+                                    <div>
                                         <h1><b>Borrower</b></h1>
                                         {{ $user->name }} <br> <br>
                                         <h1><b>ID Number</b></h1>

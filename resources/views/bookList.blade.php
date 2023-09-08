@@ -19,12 +19,19 @@
         margin-bottom: 30px;
         margin-right: 35px;
         align-items: center;
+        transform: translateX(365px);
+
     }
     .searchInpt{
         width: 250px;
         text-align: center;
     }
-    @media (max-width: 360px) and (max-height: 640px) {
+
+    .bookList{
+        width: 1250px;
+    }
+
+    @media (max-width: 1440px) and (max-height: 640px) {
     .content {
         width: 100%; /* Adjust width for smaller screens */
 
@@ -40,7 +47,9 @@
         width: 100px
     }
     .bookList{
-        margin-left: 50px;
+        margin-left: 30px;
+        width: 330px;
+        display: grid;
     }
 }
 </style>
@@ -59,9 +68,9 @@
                     <button type="submit" style="color: white; border-radius: 5px; background-color: rgb(4, 51, 71); padding: 10px;">Search</button>
                 </form>
             </div>
-            <div class="bookList" style="display: inline-flex; flex-wrap: wrap">
+            <div class="bookList" style="display: inline-flex; flex-wrap: wrap;">
                 @foreach ($bookList as $bookLists)
-                    <div style="margin: 7px; border-radius: 5px; box-shadow: 10px 10px 20px 5px rgba(0, 0, 0, 0.298);">
+                    <div style="margin: 30px; border-radius: 5px; box-shadow: 10px 10px 20px 5px rgba(0, 0, 0, 0.298);">
                         <a href="{{ route('viewBook', ['id' => $bookLists->id]) }}" style="text-decoration: none;">
                             <div style="background-position: center center; border-radius: 5px; width: 250px; height: 350px; background-size: cover; background-image: url('{{ asset('storage/' . $bookLists->image) }}');">
                                 <div style="color: white; text-align: center; padding: 10px; text-shadow: 0px 0px 5px black">

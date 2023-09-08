@@ -21,6 +21,13 @@ class BookListController extends Controller
             });
         }
 
+
+        // if ($request->has('request_search')) {
+        //     $requestSearch = $request->input('request_search');
+        //     $query->orWhere('name', 'LIKE', '%' . $requestSearch . '%')
+        //           ->orWhere('id_number', 'LIKE', '%' . $requestSearch . '%');
+        // }
+
         $bookLists = $query->get();
 
         return view('bookList', ['bookList' => $bookLists]);

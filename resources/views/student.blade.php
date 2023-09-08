@@ -23,13 +23,20 @@
         text-align: right;
         margin-bottom: 30px;
         margin-right: 35px;
+        transform: translateX(365px);
+
     }
     .searchInpt{
         width: 250px
     }
 
+    .studList{
+        width: 1250px;
 
-@media (max-width: 360px) and (max-height: 640px) {
+    }
+
+
+@media (max-width: 1440px) and (max-height: 640px) {
     .content {
         width: 100%; /* Adjust width for smaller screens */
 
@@ -44,6 +51,14 @@
     .searchInpt{
         width: 100px
     }
+
+    .studList{
+        margin-left: 20px;
+        width: 330px;
+        display: grid;
+
+    }
+
 }
     </style>
 
@@ -55,11 +70,10 @@
                     <button type="submit" style="color:white; border-radius: 5px; background-color: rgb(4, 51, 71); padding: 10px;">Search</button>
                 </form>
             </div>
-            <div style="color: white; display: inline-flex; flex-wrap: wrap;">
+            <div class="studList" style="color: white; display: inline-flex; flex-wrap: wrap;">
                 @foreach ($students as $student)
-                    <div>
-                        <div style="margin: 13px; border-radius: 10px; box-shadow: 10px 10px 20px 5px rgba(0, 0, 0, 0.298); background-color: rgb(4, 51, 71); padding: 20px">
-                            <div>
+                        <div style="margin: 30px; border-radius: 10px; box-shadow: 10px 10px 20px 5px rgba(0, 0, 0, 0.298); background-color: rgb(4, 51, 71); padding: 20px">
+                            <div style="background-position: center center; border-radius: 5px; width: 211px; ">
                                 <div style="margin-bottom: 20px;">
                                     <b>Full Name</b> <br> {{$student->name}} <br>
                                 </div>
@@ -83,14 +97,13 @@
                                     <form class="toggle-form" data-student-id="{{ $student->id }}" style="display: inline;">
                                         @csrf
                                         <button class="toggle-button" type="button"
-                                                style="width: 295px; padding: 10px; border-radius: 5px; background-color: {{ $student->is_disabled ? 'red' : 'green' }}; color: white;">
+                                                style="width: 210px; padding: 10px; border-radius: 5px; background-color: {{ $student->is_disabled ? 'red' : 'green' }}; color: white;">
                                             {{ $student->is_disabled ? 'Account Disabled' : 'Account Enabled' }}
                                         </button>
                                     </form>
                                 </div>
                             </div>
                         </div>
-                    </div>
                 @endforeach
             </div>
         </div>

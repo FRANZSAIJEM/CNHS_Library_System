@@ -46,6 +46,7 @@ class AcceptRequestController extends Controller
         $user->requestedBooks()->detach($book);
 
         $notificationText = "{$user->name} Borrowed '{$book->title}' on " . now()->format('Y-m-d H:i A') . ".";
+
         $notification = new Notification([
             'user_id' => $user->id,
             'notification_text' => $notificationText,
@@ -133,5 +134,12 @@ class AcceptRequestController extends Controller
         }
     }
 
+    public function destroy($id){
+        $transaction = AcceptedRequest::find($id);
 
+        $transaction->delete();
+
+        return redirect()->back()->with('success', 'New book returned successfully');
+
+    }
 }

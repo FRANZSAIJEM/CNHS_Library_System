@@ -113,7 +113,9 @@
             <div class="bookList" style="color: white; display: inline-flex; flex-wrap: wrap;">
                 @foreach ($acceptedRequests as $acceptedRequest)
                     <div>
-                        <div style="margin: 13px; border-radius: 10px; box-shadow: 10px 10px 20px 5px rgba(0, 0, 0, 0.298); background-color: rgb(4, 51, 71); padding: 20px">
+                        <div style="margin: 13px; border-radius: 10px; box-shadow: 10px 10px 20px 5px rgba(0, 0, 0, 0.298);
+                                    background-color: {{ (!is_null($acceptedRequest->fines) && $acceptedRequest->fines > 0.00) ? 'rgb(71, 50, 20)' : 'rgb(4, 51, 71)' }};
+                                    padding: 20px">
                             <div>
                                 <div style="margin-bottom: 20px; width: 240px;">
                                     <b>Borrower</b> <br> {{ $acceptedRequest->user->name }}<br> <br>
@@ -124,17 +126,32 @@
                                     <b>Pickup Date</b> <br> {{ $acceptedRequest->date_pickup->format('Y-m-d H:i A') }} <br> <br>
                                     <b>Return Date</b> <br> {{ $acceptedRequest->date_return->format('Y-m-d H:i A') }} <br> <br>
                                     <b>Fines</b> <br>
-                                    @if (!is_null($acceptedRequest->fines))
-                                        ${{ $acceptedRequest->fines }}
+                                    @if (!is_null($acceptedRequest->fines) && $acceptedRequest->fines > 0.00)
+                                        ${{ $acceptedRequest->fines }} <b style="font-size: 10px;">Additional 10 for another day passes</b>
                                     @else
                                         <b style="font-size: 10px;">No fines before return time expires</b>
                                     @endif
+
                                     <hr style="margin-top: 20px;">
+
+                                    <div style="display: grid; place-items: center; margin-top: 10px; margin-bottom: -30px">
+                                        <form action="{{ route('acceptedRequests.destroy', $acceptedRequest->id) }}" method="POST">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button
+                                                style="width: 150px; border-radius: 5px; padding: 10px; background-color: rgb(51, 130, 58)"
+                                                type="submit"
+                                            >
+                                                Return Book
+                                            </button>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 @endforeach
+
             </div>
           </div>
             </div>

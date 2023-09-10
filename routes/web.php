@@ -55,7 +55,7 @@ Route::put('/updateBook/{id}', [BookController::class, 'update'])->name('updateB
 Route::get('/viewBook/{id}', [BookController::class, 'viewBook'])->name('viewBook');
 Route::delete('/remove-request/{user_id}/{book_id}', [BookController::class, 'removeRequest'])->name('removeRequest');
 
-
+Route::delete('/acceptedRequests/{id}', [AcceptRequestController::class, 'destroy'])->name('acceptedRequests.destroy');
 Route::post('/acceptRequest/{user}/{book}', [AcceptRequestController::class, 'acceptRequest'])->name('acceptRequest');
 Route::get('/transactions', [AcceptRequestController::class, 'transactions'])->name('transactions');
 Route::get('/history', [AcceptRequestController::class, 'history'])->name('history');

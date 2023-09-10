@@ -59,13 +59,21 @@ class User extends Authenticatable
     return $this->requestedBooks()->where('book_id', $bookId)->exists();
 }
 
-public function acceptedRequests()
-{
-    return $this->hasMany(AcceptedRequest::class);
-}
-public function notifications()
-{
-    return $this->belongsToMany(Notification::class)->withTimestamps();
-}
+    public function acceptedRequests()
+    {
+        return $this->hasMany(AcceptedRequest::class);
+    }
+
+
+    public function hasAcceptedRequestForBook($bookId)
+    {
+        return AcceptedRequest::where('book_id', $bookId)->exists();
+    }
+
+
+    public function notifications()
+    {
+        return $this->belongsToMany(Notification::class)->withTimestamps();
+    }
 
 }

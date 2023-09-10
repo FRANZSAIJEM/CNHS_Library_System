@@ -99,14 +99,19 @@ class BookController extends Controller
     {
         $book = Book::find($id);
         $userHasRequestedThisBook = false;
+        $userHasAcceptedRequest = false; // Initialize the variable
 
         if (Auth::check()) {
             $user = Auth::user();
+
             // Check if the user has already requested this book
             $userHasRequestedThisBook = $user->hasRequestedBook($book->id);
+
+            // Check if the user has accepted the request for this book (You should define this logic)
+            $userHasAcceptedRequest = $user->hasAcceptedRequestForBook($book->id);
         }
 
-        return view('viewBook', compact('book', 'userHasRequestedThisBook'));
+        return view('viewBook', compact('book', 'userHasRequestedThisBook', 'userHasAcceptedRequest'));
     }
 
 

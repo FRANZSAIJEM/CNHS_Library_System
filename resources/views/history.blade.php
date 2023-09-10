@@ -106,7 +106,7 @@
                         <div>
                             <div style="margin: 13px; border-radius: 10px; box-shadow: 10px 10px 20px 5px rgba(0, 0, 0, 0.298); background-color: rgb(4, 51, 71); padding: 20px">
                                 <div>
-                                    <div style="margin-bottom: 20px; width: 240px;">
+                                    <div style="margin-bottom: 20px; width: 340px;">
                                         <!-- Display the notification text -->
                                         {{ $userNotification->notification->notification_text }}
                                     </div>

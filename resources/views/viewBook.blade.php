@@ -131,26 +131,30 @@
                 </div>
 
                 @if (!Auth::user()->is_admin)
-                    <div style="display: grid; place-content: center; margin-top: 20px;">
-                        <button onclick="showConfirmationModal({{ $book->id }})"
-                                type="submit"
-                                style="background-color: {{ $book->availability === 'Not Available' || $book->requestedByUsers->count() > 0 ? 'rgb(83, 83, 83)' : 'white' }};
-                                border-radius: 5px; padding: 10px; color: black; width: auto;"
-                                {{ $book->availability === 'Not Available' || $book->requestedByUsers->count() > 0 ? 'disabled' : '' }}>
-                            <b>
-                                @if ($book->requestedByUsers->count() > 0)
-                                    @if ($book->requestedByUsers->contains(Auth::user()))
-                                        Requested
-                                    @else
-                                        Requested by {{ $book->requestedByUsers[0]->name }}
-                                    @endif
+                <div style="display: grid; place-content: center; margin-top: 20px;">
+                    <button onclick="showConfirmationModal({{ $book->id }})"
+                            type="submit"
+                            style="background-color: {{ $book->availability === 'Not Available' || $book->requestedByUsers->count() > 0 || $userHasAcceptedRequest ? 'rgb(83, 83, 83)' : 'white' }};
+                            border-radius: 5px; padding: 10px; color: black; width: auto;"
+                            {{ $book->availability === 'Not Available' || $book->requestedByUsers->count() > 0 || $userHasAcceptedRequest || $userHasRequestedThisBook ? 'disabled' : '' }}
+                    >
+                        <b>
+                            @if ($book->requestedByUsers->count() > 0)
+                                @if ($userHasAcceptedRequest)
+                                    Requested by {{ $book->requestedByUsers[0]->name }}
+                                @elseif ($userHasRequestedThisBook)
+                                    Requested
                                 @else
-                                    Request
+                                    Requested by {{ $book->requestedByUsers[0]->name }}
                                 @endif
-                            </b>
-                        </button>
-                    </div>
-                @endif
+                            @else
+                                Request
+                            @endif
+                        </b>
+                    </button>
+                </div>
+            @endif
+
 
 
                 </div>

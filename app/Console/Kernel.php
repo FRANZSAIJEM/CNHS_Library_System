@@ -13,7 +13,9 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         // Run the fines:calculate command daily at a specific time (e.g., midnight)
-        $schedule->command('fines:calculate')->dailyAt('00:00');
+
+
+        // $schedule->command('fines:calculate-minute')->everyMinute();
     }
 
 

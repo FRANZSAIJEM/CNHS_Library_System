@@ -7,29 +7,13 @@ use App\Models\User;
 use App\Models\Book; // Import your Book model
 use App\Models\AcceptedRequest; // Import your Book model
 use App\Models\Notification;
+use App\Models\UserNotification;
 use Illuminate\Support\Facades\Auth;
+
+
 
 class AcceptRequestController extends Controller
 {
-
-    public function index(Request $request)
-    {
-        $query = book::query();
-        $user = Auth::user();
-
-        if ($request->has('request_search')) {
-            $bookSearch = $request->input('request_search');
-            $query->where(function ($subquery) use ($bookSearch) {
-                $subquery->where('name', 'LIKE', '%' . $bookSearch . '%')
-                        ->orWhere('id_number', 'LIKE', '%' . $bookSearch . '%');
-            });
-        }
-
-        $bookLists = $query->get();
-
-        return view('bookList', ['bookList' => $bookLists, 'user' => $user, 'book' => $book]);
-    }
-
     public function acceptRequest(Request $request, User $user, Book $book)
     {
         // Assuming you have a "accepted_requests" table to store the accepted requests.
@@ -40,26 +24,20 @@ class AcceptRequestController extends Controller
         $acceptedRequest->borrower_id = $user->id;
         $acceptedRequest->date_borrow = now();
          // Retrieve the values from the form and format them as datetime values
-        $acceptedRequest->date_pickup = \Carbon\Carbon::createFromFormat('Y-m-d', $request->input('date_pickup'));
-        $acceptedRequest->date_return = \Carbon\Carbon::createFromFormat('Y-m-d', $request->input('date_return'));
+         $acceptedRequest->date_pickup = \Carbon\Carbon::createFromFormat('Y-m-d\TH:i', $request->input('date_pickup'));
+         $acceptedRequest->date_return = \Carbon\Carbon::createFromFormat('Y-m-d\TH:i', $request->input('date_return'));
 
 
         $fines = $request->input('fines');
-        if ($acceptedRequest->date_return->isPast()) {
-            $fines = $request->input('fines');
-            if (!empty($fines)) {
-                // Calculate the fines and store them with two decimal places
-                $calculatedFines = (float) number_format($fines, 2, '.', '');
-                $acceptedRequest->fines = $calculatedFines;
+        if (!empty($fines)) {
+            // Calculate the fines and store them with two decimal places
+            $calculatedFines = (float) number_format($fines, 2, '.', '');
+            $acceptedRequest->fines = $calculatedFines;
 
-                // Store the calculated fines in the session
-                $request->session()->put('fines', $calculatedFines);
-            } else {
-                $acceptedRequest->fines = null; // If no fines are provided, set it to null.
-            }
+            // Store the calculated fines in the session
+            $request->session()->put('fines', $calculatedFines);
         } else {
-            // If the return date is in the future, set fines to null or any other desired action.
-            $acceptedRequest->fines = null;
+            $acceptedRequest->fines = null; // If no fines are provided, set it to null.
         }
 
         $acceptedRequest->save();
@@ -67,15 +45,93 @@ class AcceptRequestController extends Controller
         // Detach the book from the user's requestedBooks relationship since it's been accepted.
         $user->requestedBooks()->detach($book);
 
-        // Inside the store method
-        $notificationText = "You Borrowed '{$book->title}' on " . now()->format('Y-m-d H:i A') . ".";
+        $notificationText = "{$user->name} Borrowed '{$book->title}' on " . now()->format('Y-m-d H:i A') . ".";
         $notification = new Notification([
             'user_id' => $user->id,
             'notification_text' => $notificationText,
         ]);
         $notification->save();
 
+        $userIdsToNotify = User::pluck('id')->toArray();
+
+        $usersToNotify = User::whereIn('id', $userIdsToNotify)->get();
+
+        foreach ($usersToNotify as $userToNotify) {
+            $userNotification = new UserNotification([
+                'user_id' => $userToNotify->id,
+                'notification_id' => $notification->id,
+            ]);
+            $userNotification->save();
+        }
+
         // Redirect back to the previous page or wherever you want.
-        return redirect()->back()->with('success', 'Request accepted and saved.');
+        return redirect()->back()->with('success', 'Request accepted and saved.')
+        ->with('notification', $notificationText);
     }
+
+
+    public function transactions(Request $request)
+    {
+        $idNumberSearch = $request->input('id_number_search');
+        // Retrieve all accepted requests from the database
+        $query = AcceptedRequest::with('user');
+
+        // If there is an ID number search query, filter by it
+        if (!empty($idNumberSearch)) {
+            $query->whereHas('user', function ($q) use ($idNumberSearch) {
+                $q->where('id_number', 'LIKE', "%$idNumberSearch%")
+                  ->orWhere('name', 'LIKE', "%$idNumberSearch%");
+            });
+        }
+
+        $acceptedRequests = $query->get();
+
+        // Convert date_borrow and date_return fields to DateTime objects
+        $acceptedRequests->each(function ($acceptedRequest) {
+            $acceptedRequest->date_borrow = \Carbon\Carbon::parse($acceptedRequest->date_borrow);
+            $acceptedRequest->date_pickup = \Carbon\Carbon::parse($acceptedRequest->date_pickup);
+            $acceptedRequest->date_return = \Carbon\Carbon::parse($acceptedRequest->date_return);
+        });
+
+        // Remove the search query parameter to clear the search
+        $request->merge(['id_number_search' => null]);
+
+        return view('transactions', compact('acceptedRequests', 'idNumberSearch'));
+    }
+
+
+    public function history()
+    {
+        // Get the currently authenticated user
+        $user = Auth::user();
+
+        // Retrieve the user's notifications from the database
+        $userNotifications = UserNotification::where('user_id', $user->id)
+            ->with('notification')
+            ->get();
+
+        return view('history', compact('userNotifications'));
+    }
+
+
+
+    public function clearNotification($id)
+    {
+        // Find the UserNotification record by ID
+        $userNotification = UserNotification::find($id);
+
+        // Check if the record exists
+        if ($userNotification) {
+            // Delete the UserNotification record
+            $userNotification->delete();
+
+            // Redirect back to the history page or wherever you prefer
+            return redirect()->back()->with('success', 'Notification cleared successfully');
+        } else {
+            // Handle the case where the record does not exist (e.g., show an error message)
+            return redirect()->back()->with('error', 'Notification not found');
+        }
+    }
+
+
 }

@@ -5,23 +5,23 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Notification extends Model
+class UserNotification extends Model
 {
     use HasFactory;
 
     protected $fillable = [
         'user_id',
-        'notification_text',
+        'notification_id',
     ];
-
 
     public function user()
     {
         return $this->belongsTo(User::class);
     }
 
-    public function users()
+    public function notification()
     {
-        return $this->belongsToMany(User::class)->withTimestamps();
+        return $this->belongsTo(Notification::class);
     }
+
 }

@@ -24,7 +24,7 @@
                         {{ __('Borrow') }}
                     </x-nav-link>
 
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                    <x-nav-link :href="route('history')" :active="request()->routeIs('history')">
                         {{ __('History') }}
                     </x-nav-link>
 
@@ -44,13 +44,17 @@
                         {{ __('Requests') }}
                     </x-nav-link>
 
-                    <x-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.dashboard')">
+                    <x-nav-link :href="route('transactions')" :active="request()->routeIs('transactions')">
                         {{ __('Transactions') }}
                     </x-nav-link>
 
                     <x-nav-link :href="route('bookList')" :active="request()->routeIs('bookList')">
                         {{ __('Books') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('history')" :active="request()->routeIs('history')">
+                        {{ __('History') }}
+                    </x-nav-link>
+
                     @endif
 
                 </div>

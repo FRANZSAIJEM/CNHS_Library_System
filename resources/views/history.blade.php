@@ -99,44 +99,30 @@
 
     <div class="container">
         <div class="content">
-            <div class="searchBtn">
-                <form action="{{ route('transactions') }}" method="GET" id="searchForm">
-                    <input id="id_number_search" class="searchInpt" style="text-align:center; border-radius: 20px; color:black;" type="text" name="id_number_search" placeholder="ID Number, Name" value="{{ $idNumberSearch }}">
-                    @if (!empty($idNumberSearch))
-                    <button type="button" style="color:white; border-radius: 5px; background-color: rgb(4, 51, 71); padding: 10px;" onclick="clearSearchInput()">Clear</button>
-                    @else
-                    <button type="submit" style="color:white; border-radius: 5px; background-color: rgb(4, 51, 71); padding: 10px;">Search</button>
-                    @endif
-                </form>
-            </div>
           <div class="transactions">
-            <div class="bookList" style="color: white; display: inline-flex; flex-wrap: wrap;">
-                @foreach ($acceptedRequests as $acceptedRequest)
-                    <div>
-                        <div style="margin: 13px; border-radius: 10px; box-shadow: 10px 10px 20px 5px rgba(0, 0, 0, 0.298); background-color: rgb(4, 51, 71); padding: 20px">
-                            <div>
-                                <div style="margin-bottom: 20px; width: 240px;">
-                                    <b>Borrower</b> <br> {{ $acceptedRequest->user->name }}<br> <br>
-                                    <b>ID Number</b> <br> {{ $acceptedRequest->user->id_number }}<br> <br>
+                <div class="bookList" style="color: white; display: inline-flex; flex-wrap: wrap;">
 
-                                    <b>Book Title</b> <br> {{ $acceptedRequest->book_title }} <br> <br>
-                                    <b>Borrowed on</b> <br> {{ $acceptedRequest->date_borrow->format('Y-m-d H:i A') }} <br> <br>
-                                    <b>Pickup Date</b> <br> {{ $acceptedRequest->date_pickup->format('Y-m-d H:i A') }} <br> <br>
-                                    <b>Return Date</b> <br> {{ $acceptedRequest->date_return->format('Y-m-d H:i A') }} <br> <br>
-                                    <b>Fines</b> <br>
-                                    @if (!is_null($acceptedRequest->fines))
-                                        ${{ $acceptedRequest->fines }}
-                                    @else
-                                        <b style="font-size: 10px;">No fines before return time expires</b>
-                                    @endif
-                                    <hr style="margin-top: 20px;">
+                    @foreach ($userNotifications as $userNotification)
+                        <div>
+                            <div style="margin: 13px; border-radius: 10px; box-shadow: 10px 10px 20px 5px rgba(0, 0, 0, 0.298); background-color: rgb(4, 51, 71); padding: 20px">
+                                <div>
+                                    <div style="margin-bottom: 20px; width: 240px;">
+                                        <!-- Display the notification text -->
+                                        {{ $userNotification->notification->notification_text }}
+                                    </div>
+                                    <!-- Add a Clear button with a form to delete the notification -->
+                                    <form action="{{ route('clearNotification', ['id' => $userNotification->id]) }}" method="POST">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit">Clear</button>
+                                    </form>
+
                                 </div>
                             </div>
                         </div>
-                    </div>
-                @endforeach
+                    @endforeach
+                </div>
             </div>
-          </div>
             </div>
         </div>
     </div>

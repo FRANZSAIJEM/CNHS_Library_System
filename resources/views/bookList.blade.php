@@ -1,4 +1,4 @@
-<style>
+<style scoped>
 .container {
         display: grid;
         place-items: center;
@@ -44,14 +44,43 @@
         transform: translateY(-110px)
     }
     .searchInpt{
-        width: 100px
+        width: 250px
     }
     .bookList{
         margin-left: 30px;
-        width: 330px;
+        width: 630px;
         display: grid;
     }
+    .books{
+        display: grid;
+        place-content: center;
+    }
+
+    @media (max-width: 699px) and (max-height: 640px) {
+    .content {
+        width: 100%; /* Adjust width for smaller screens */
+
+    }
+
+    .searchBtn{
+        text-align: right;
+        margin-right: 20px;
+        margin-bottom: -100px;
+        transform: translateY(-110px)
+    }
+    .searchInpt{
+        width: 100px
+    }
+    .bookList{
+        margin-left: 50px;
+        width: 330px;
+    }
+    .books{
+        display: grid;
+        place-content: center;
+    }
 }
+    }
 </style>
 
 <x-admin-layout>
@@ -68,36 +97,38 @@
                     <button type="submit" style="color: white; border-radius: 5px; background-color: rgb(4, 51, 71); padding: 10px;">Search</button>
                 </form>
             </div>
-            <div class="bookList" style="display: inline-flex; flex-wrap: wrap;">
-                @foreach ($bookList as $bookLists)
-                    <div style="margin: 30px; border-radius: 5px; box-shadow: 10px 10px 20px 5px rgba(0, 0, 0, 0.298);">
-                        <a href="{{ route('viewBook', ['id' => $bookLists->id]) }}" style="text-decoration: none;">
-                            <div style="background-position: center center; border-radius: 5px; width: 250px; height: 350px; background-size: cover; background-image: url('{{ asset('storage/' . $bookLists->image) }}');">
-                                <div style="color: white; text-align: center; padding: 10px; text-shadow: 0px 0px 5px black">
-                                    <div style="margin-top: 75px;">
-                                        <b style="font-size: 25px;">Title</b> <br>
-                                        {{$bookLists->title}} <br>
-                                        <b style="font-size: 25px;">Author</b> <br>
-                                        {{$bookLists->author}} <br>
-                                        <b style="font-size: 25px;">Subject</b> <br>
-                                        {{$bookLists->subject}} <br>
+            <div class="books">
+                <div class="bookList" style="display: inline-flex; flex-wrap: wrap;">
+                    @foreach ($bookList as $bookLists)
+                        <div style="margin: 30px; border-radius: 5px; box-shadow: 10px 10px 20px 5px rgba(0, 0, 0, 0.298);">
+                            <a href="{{ route('viewBook', ['id' => $bookLists->id]) }}" style="text-decoration: none;">
+                                <div style="background-position: center center; border-radius: 5px; width: 250px; height: 350px; background-size: cover; background-image: url('{{ asset('storage/' . $bookLists->image) }}');">
+                                    <div style="color: white; text-align: center; padding: 10px; text-shadow: 0px 0px 5px black">
+                                        <div style="margin-top: 75px;">
+                                            <b style="font-size: 25px;">Title</b> <br>
+                                            {{$bookLists->title}} <br>
+                                            <b style="font-size: 25px;">Author</b> <br>
+                                            {{$bookLists->author}} <br>
+                                            <b style="font-size: 25px;">Subject</b> <br>
+                                            {{$bookLists->subject}} <br>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </a>
-                        @if (Auth::user()->is_admin)
-                        <div style="text-align: center; margin-top: 4px;">
-                            <form action="{{ route('editBook.edit', ['id' => $bookLists->id]) }}" method="GET" style="display: inline;">
-                                @csrf
-                                <button type="submit" style="background-color: rgb(56, 128, 63); width: 123px !important; border: none; border-radius: 5px; padding: 10px; color: white; text-decoration: none; cursor: pointer;"><b>Edit</b></button>
-                            </form>
+                            </a>
+                            @if (Auth::user()->is_admin)
+                            <div style="text-align: center; margin-top: 4px;">
+                                <form action="{{ route('editBook.edit', ['id' => $bookLists->id]) }}" method="GET" style="display: inline;">
+                                    @csrf
+                                    <button type="submit" style="background-color: rgb(56, 128, 63); width: 123px !important; border: none; border-radius: 5px; padding: 10px; color: white; text-decoration: none; cursor: pointer;"><b>Edit</b></button>
+                                </form>
 
-                            <!-- Button to trigger the modal -->
-                            <button type="button" style="background-color: rgb(128, 56, 56); width: 123px; border-radius: 5px; padding: 10px; color: white;" onclick="showConfirmationModal({{ $bookLists->id }})"><b>Delete</b></button>
+                                <!-- Button to trigger the modal -->
+                                <button type="button" style="background-color: rgb(128, 56, 56); width: 123px; border-radius: 5px; padding: 10px; color: white;" onclick="showConfirmationModal({{ $bookLists->id }})"><b>Delete</b></button>
+                            </div>
+                            @endif
                         </div>
-                        @endif
-                    </div>
-                @endforeach
+                    @endforeach
+                </div>
             </div>
         </div>
 

@@ -1,4 +1,4 @@
-<style>
+<style scoped>
     .container {
             display: grid;
             place-items: center;
@@ -130,20 +130,34 @@
                     </div>
                 </div>
 
-               @if (Auth::user()->is_admin)
-               <div style="display: grid; place-content: center; margin-top: 20px;">
-                {{-- <button type="button" style="background-color: rgb(128, 56, 56); width: 123px; border-radius: 5px; padding: 10px; color: white;" onclick="showConfirmationModal({{ $book->id }})"><b>Request</b></button> --}}
-                <button onclick="showConfirmationModal({{ $book->id }})" type="submit" style="background-color: {{ $book->availability === 'Not Available' || $userHasRequestedThisBook ? 'rgb(83, 83, 83)' : 'white' }}; border-radius: 5px; padding: 10px; color: black; width: 100px;" {{ $book->availability === 'Not Available' || $userHasRequestedThisBook ? 'disabled' : '' }}>
-                    <b>{{ $userHasRequestedThisBook ? 'Requested' : 'Request' }}</b>
-                </button>
-                </div>
-               @endif
-
-               </div>
-                @else
-                    <p>Book not found</p>
+                @if (!Auth::user()->is_admin)
+                    <div style="display: grid; place-content: center; margin-top: 20px;">
+                        <button onclick="showConfirmationModal({{ $book->id }})"
+                                type="submit"
+                                style="background-color: {{ $book->availability === 'Not Available' || $book->requestedByUsers->count() > 0 ? 'rgb(83, 83, 83)' : 'white' }};
+                                border-radius: 5px; padding: 10px; color: black; width: auto;"
+                                {{ $book->availability === 'Not Available' || $book->requestedByUsers->count() > 0 ? 'disabled' : '' }}>
+                            <b>
+                                @if ($book->requestedByUsers->count() > 0)
+                                    @if ($book->requestedByUsers->contains(Auth::user()))
+                                        Requested
+                                    @else
+                                        Requested by {{ $book->requestedByUsers[0]->name }}
+                                    @endif
+                                @else
+                                    Request
+                                @endif
+                            </b>
+                        </button>
+                    </div>
                 @endif
-            </div>
+
+
+                </div>
+                    @else
+                        <p>Book not found</p>
+                    @endif
+                </div>
         </div>
         <div id="confirmDeleteModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 1;">
             <div style="background-color: white; border-radius: 5px; width: 300px; margin: 100px auto; padding: 20px; text-align: center;">

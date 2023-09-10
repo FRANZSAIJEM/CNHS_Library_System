@@ -63,6 +63,9 @@ public function acceptedRequests()
 {
     return $this->hasMany(AcceptedRequest::class);
 }
-
+public function notifications()
+{
+    return $this->belongsToMany(Notification::class)->withTimestamps();
+}
 
 }

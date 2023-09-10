@@ -57,6 +57,10 @@ Route::delete('/remove-request/{user_id}/{book_id}', [BookController::class, 're
 
 
 Route::post('/acceptRequest/{user}/{book}', [AcceptRequestController::class, 'acceptRequest'])->name('acceptRequest');
+Route::get('/transactions', [AcceptRequestController::class, 'transactions'])->name('transactions');
+Route::get('/history', [AcceptRequestController::class, 'history'])->name('history');
+
+Route::delete('/clearNotification/{id}', [AcceptRequestController::class, 'clearNotification'])->name('clearNotification');
 
 
 Route::get('/bookList', [BookListController::class, 'index'])->middleware(['auth', 'verified', AdminMiddleware::class])->name('bookList');

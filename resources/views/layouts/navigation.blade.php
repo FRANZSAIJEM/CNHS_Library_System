@@ -28,7 +28,7 @@
                         {{ __('History') }}
                     </x-nav-link>
 
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                    <x-nav-link :href="route('notifications')" :active="request()->routeIs('notifications')">
                         {{ __('Notifications') }}
                     </x-nav-link>
 

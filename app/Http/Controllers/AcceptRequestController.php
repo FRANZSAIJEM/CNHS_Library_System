@@ -142,4 +142,19 @@ class AcceptRequestController extends Controller
         return redirect()->back()->with('success', 'New book returned successfully');
 
     }
+
+    public function notifications()
+    {
+        // Get the ID of the logged-in user
+        $loggedInUserId = auth()->id();
+
+        // Retrieve accepted requests for the logged-in user
+        $acceptedRequests = AcceptedRequest::where('user_id', $loggedInUserId)->get();
+
+        return view('notifications', [
+            'acceptedRequests' => $acceptedRequests,
+            'loggedInUser' => auth()->user(),
+        ]);
+    }
+
 }

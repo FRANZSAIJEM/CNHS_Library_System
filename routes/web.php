@@ -62,6 +62,8 @@ Route::get('/history', [AcceptRequestController::class, 'history'])->name('histo
 
 Route::delete('/clearNotification/{id}', [AcceptRequestController::class, 'clearNotification'])->name('clearNotification');
 
+Route::get('/notifications', [AcceptRequestController::class, 'notifications'])->name('notifications');
+
 
 Route::get('/bookList', [BookListController::class, 'index'])->middleware(['auth', 'verified', AdminMiddleware::class])->name('bookList');
 

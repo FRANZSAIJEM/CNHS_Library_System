@@ -37,8 +37,8 @@
 
 
                             <h3 style="text-align: center; padding-top: 20x">
-                                <x-nav-link style="font-size: 13px; color: black; padding: 10px; border-radius: 5px; background-color: rgb(215, 215, 215)" :href="route('bookList')" :active="request()->routeIs('bookList')">
-                                    <b>{{ __('Borrow Book') }}</b>
+                                <x-nav-link style="font-size: 13px; color: black; padding: 10px; border-radius: 5px; background-color: rgb(215, 215, 215)" :href="route('notifications')" :active="request()->routeIs('notifications')">
+                                    <b>{{ __('Details') }}</b>
                                 </x-nav-link>
                             </h3>
 
